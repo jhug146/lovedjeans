@@ -1,0 +1,130 @@
+{% extends "base-template.html" %}
+
+{% block title %}
+<title>Lovedjeans - Sizing</title>
+{% endblock %}
+
+{% block main %}
+<div id='policy-main'>
+  <h1>Sizing</h1>
+  <p>At Loved Jeans we know how hard it is to buy well fitting jeans, especially online.
+    So to make sure that the jeans you buy will fit you we measure every pair of jeans and we list them as this size.
+    A lot of jeans differ from the label size, they may shrink or stretch over time, they may have been taken up or in and they may never have had the right label on in the first place.
+    To work out what size you need please follow these simple steps.
+  </p>
+  <h3>Waist Size:</h3>
+  <ul>
+    <li>Take a pair of well fitting jeans.</li>
+    <li>Lie them flat.</li>
+    <li>Measure from one side of the waist band to the other without stretching.</li>
+    <li>Double this size in inches to give your waist size.</li>
+  </ul>
+  {% load static %}
+  <img id="sizing-image" src="{% static 'media/measure_example.jpg' %}" alt="This image could not be loaded">
+  <table class='sizing-table' style="margin: 3vh auto; border-collapse: collapse;" cellspacing="0" cellpadding="0" border="0"><tbody>
+    <tr>
+      <td class="xl65">Waist Size (Inches)</td>
+      <td class="xl66">26</td>
+      <td class="xl66">28</td>
+      <td class="xl66">30</td>
+      <td class="xl66">32</td>
+      <td class="xl66">34</td>
+      <td class="xl66">36</td>
+      <td class="xl66">38</td>
+    </tr>
+    <tr>
+      <td class="xl65">Jean Size (UK)</td>
+      <td class="xl66">6</td>
+      <td class="xl66">8</td>
+      <td class="xl66">10</td>
+      <td class="xl66">12</td>
+      <td class="xl66">14</td>
+      <td class="xl66">16</td>
+      <td class="xl66">18</td>
+    </tr>
+    <tr>
+      <td class="xl65">Jeans Size (European)</td>
+      <td class="xl66">32</td>
+      <td class="xl66">34</td>
+      <td class="xl66">36</td>
+      <td class="xl66">38</td>
+      <td class="xl66">40</td>
+      <td class="xl66">42</td>
+      <td class="xl66">44</td>
+    </tr>
+    <tr>
+      <td class="xl65">Jeans Size (USA)</td>
+      <td class="xl66">2</td>
+      <td class="xl66">4</td>
+      <td class="xl66">6</td>
+      <td class="xl66">8</td>
+      <td class="xl66">10</td>
+      <td class="xl66">12</td>
+      <td class="xl66">14</td>
+    </tr>
+  </tbody></table>
+  <h3>Inside leg:</h3>
+  <ul>
+    <li>Measure from crotch to bottom of the hem, without stretching.</li>
+    <li>If this is an uneven number round up to the nearest even number, ie, 29 inches would be 30 inches.</li>
+  </ul>
+  <div id='womens-length-div'>
+    <h3>Womens Length:</h3>
+    <table id="mens-length" class="sizing-table" cellspacing="0" cellpadding="0" border="0"><tbody>
+      <tr>
+        <td class="xl65">Height</td>
+        <td class="xl65">Length</td>
+      </tr>
+      <tr>
+        <td class="xl65">4'11 - 5'2</td>
+        <td class="xl65">Extra Short - 28 in</td>
+      </tr>
+      <tr>
+        <td class="xl65">5'2 - 5'4</td>
+        <td class="xl65">Short - 30 in</td>
+      </tr>
+      <tr>
+        <td class="xl65">5'5 - 5'7</td>
+        <td class="xl65">Regular - 32 in</td>
+      </tr>
+      <tr>
+        <td class="xl65">5'8 - 5'10</td>
+        <td class="xl65">Long - 34 in</td>
+      </tr>
+      <tr>
+        <td class="xl65">5'10 - 6'1</td>
+        <td class="xl65">Extra Long - 36 in</td>
+      </tr>
+    </tbody></table>
+  </div>
+  <div id='mens-length-div'>
+    <h3>Mens Lengths:</h3>
+    <table id="mens-length" class="sizing-table" cellspacing="0" cellpadding="0" border="0"><tbody>
+      <tr>
+        <td class="xl65">Height</td>
+        <td class="xl65">Length</td>
+      </tr>
+      <tr>
+        <td class="xl65">4'11 - 5'3</td>
+        <td class="xl65">Extra Short - 28 in</td>
+      </tr>
+      <tr>
+        <td class="xl65">5'3 - 5'7</td>
+        <td class="xl65">Short - 30 in</td>
+      </tr>
+      <tr>
+        <td class="xl65">5'7 - 5'11</td>
+        <td class="xl65">Regular - 32 in</td>
+      </tr>
+      <tr>
+        <td class="xl65">5'11 - 6'3</td>
+        <td class="xl65">Long - 34 in</td>
+      </tr>
+      <tr>
+        <td class="xl65">6'3 - 6'7</td>
+        <td class="xl65">Extra Long - 36 in</td>
+      </tr>
+    </tbody></table>
+  </div>
+</div>
+{% endblock %}

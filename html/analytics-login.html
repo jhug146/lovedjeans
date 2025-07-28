@@ -1,0 +1,17 @@
+{% extends "base-template.html" %}
+
+{% block title %}
+<title>Analytics - Lovedjeans</title>
+{% endblock %}
+
+{% block main %}
+<div id='login-div'>
+  <form id='login-form' action="{% url 'analytics' %}" method='post'>{% csrf_token %}
+      <p>Username:</p>
+      <input type='text' name='username'>
+      <p>Password:</p>
+      <input type='password' name='password'>
+      <input type='submit' value='Login'>
+  </form>
+</div>
+{% endblock %}

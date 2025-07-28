@@ -1,0 +1,32 @@
+{% extends "base-template.html" %}
+
+{% block title %}
+<title>Loved Jeans - Payment Complete</title>
+{% endblock %}
+
+{% block main %}
+<div id='payment-done-main'>
+  <div id='payment-details'>
+    <h2>Thank you for shopping here at Lovedjeans</h2>
+    <h2>Your Order ID is: #{{ order_id }}</h2>
+    <h2>Your tracking number will be emailed to you as soon as delivery has been booked</h2>
+  </div>
+  <div id='more-items-div'>
+    <h2>Some other items you may like:</h2>
+    <div id='more-items'>
+    {% for item in more_items %}
+      <div class='more-items-box'>
+        <a href="{% url 'item' sku=item.sku %}">
+          {% load static %}
+          <img class='product-image' alt='This image could not be displayed' src="https://www.lovedjeans.co.uk/{{ item.image_title|first }}">
+        </a>
+        <a class="title-jquery" href="{% url 'item' sku=item.sku %}">
+          <h3 class='product-title'>{{ item.title }}</h3>
+        </a>
+        <p class='more-items-price'><i>£{{ item.price }}</i></p>
+      </div>
+    {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

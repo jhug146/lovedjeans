@@ -1,0 +1,209 @@
+{% extends "base-template.html" %}
+
+{% block title %}
+<title>{{ item.page_title }}</title>
+{% endblock %}
+
+{% block main %}
+<div id='main-item-div'>
+  <div id='item-left-col'></div>
+    <div id='main-box'>
+      <p class='hidden'>{{ item.sku }}</p>
+      <p class='hidden' id='img_urls'>{{ item.urls_list }}</p>
+      <div id='search-bar'>
+        <div id='search-bar-div' style='margin-top: 0'>
+            {% load static %}
+            <img id='search-icon' src="{% static 'media/search-icon.png' %}">
+            <input name='search' id='search-input' value="{{ form_values.final.search }}">
+        </div>
+      </div>
+      <h2 id='purchase-title'>{{ item.title }}</h2>
+      <div id='imgs-container'>
+        <div id='main-image-container'>
+          <img id='main-image' src='{{ item.image_title.0 }}'>
+          <div id='image-left' unselectable="on"><</div>
+          <div id='image-right' unselectable="on">></div>
+        </div>
+        <div id='small-imgs-container'>
+          {% for img in item.image_title %}<div class='small-img-div'><img src='{{ img }}' class='small-img'></div>{% endfor %}
+        </div>
+        <div id='purchase-buttons'>
+          <p id='purchase-price'>£{{ item.price }}</p>
+          <button {% if item.sku in skus %}id='added-to-cart'{% else %}id='add-to-cart'{% endif %}>{% if item.sku in skus %}Added to Cart{% else %}Add to Cart{% endif %}</button>
+          <a href="{% url 'cart' %}" id='view-cart-item' class='view-cart-hidden' {% if item.sku in skus %}style="display: block"{% endif %}>View Cart</a>
+          <button id='buy-it-now'>Buy it Now</button>
+        </div>
+      </div>
+      <div id='description'>
+        <div id='item-specifics'>
+          <ul id='item-specifics-list'>
+            <li>
+              <button class='sub-title' id='item-description'>
+                <h5 class='sub-title-text'>Description</h5>
+              </button>
+            </li>
+            <li>
+              <button class='sub-title' id='item-sizing'>
+                <h5 class='sub-title-text'>Sizing</h5>
+              </button>
+            </li>
+            <li>
+              <button class='sub-title' id='item-deliveries'>
+                <h5 class='sub-title-text'>Shipping</h5>
+              </button>
+            </li>
+            <li>
+              <button class='sub-title' id='item-returns'>
+                <h5 class='sub-title-text'>Returns</h5>
+              </button>
+            </li>
+          </ul>
+        </div>
+      <div id='infoh'>
+        <div class='spe-list' id='des-list' style='display:block'>
+          <h3 class='ispe-title'>Details:</h3>
+          <ul>
+            <li class='list1'>Mens/Womens:<span class='item-detail'>{{ item.gender }}</span></li>
+            <li class='list1'>Brand/Model:<span class='item-detail'>{{ item.brand }} {{ item.model }}</span></li>
+            <li class='list1'>Style:<span class='item-detail'>{{ item.legStyle }}</span></li>
+            <li class='list1'>Fly:<span class='item-detail'>{{ item.closure }}</span></li>
+            <li class='list1'>Colour:<span class='item-detail'>{{ item.colour }}</span></li>
+            <li class='list1'>Material:<span class='item-detail'>{{ item.exactMaterial }}</span></li>
+            {% if item.fabricWash != 'none' and item.fabricWash != ' ' and item.fabricWash %}<li class='list1'>Model Code/Wash: <span class='item-detail'>{{ item.fabricWash }}</span></li>{% endif %}
+          </ul>
+          <h3 class='ispe-title'>Sizing:</h3>
+          <p class='ispe-text'>All jeans are hand-measured as shrinking and stretching can occur over time.</p>
+          <p class='ispe-text'>Items listed as measured size to ensure best fit. </p>
+          <ul>
+            <li class='list1'>Measured Size:<span class='item-detail'>{{ item.measuredSize }}</span></li>
+            <li class='list1'>Tag Size:<span class='item-detail'>{{ item.tagSize }}</span></li>
+            <li class='list1'>Hem Width:<span class='item-detail'>{{ item.hem }} in</span></li>
+            <li class='list1'>Rise:<span class='item-detail'>{{ item.rise }} in</span></li>
+            <li class='list1'>Outside Leg:<span class='item-detail'>{{ item.outsideLeg }} in</span></li>
+          </ul>
+          <h3 class='ispe-title'>Condition:</h3>
+          <ul id='condition-list'>{% if item.condition1 != ' ' and item.condition1 != 'None' and item.condition1 != 'none' and item.condition1 %}<li class='list1'>{{ item.condition1 }}</li>{% endif %}{% if item.condition2 != ' ' and item.condition2 != 'None' and item.condition2 != 'none' and item.condition2 %}<li class='list1'>{{ item.condition2 }}</li>{% endif %}{% if item.condition3 != ' ' and item.condition3 != 'None' and item.condition3 != 'none' and item.condition3 %}<li class='list1'>{{ item.condition3 }}</li>{% endif %}</ul>
+        </div>
+        <div class='spe-list' id='siz-list' style='display:none'>
+          <p class='ispe-text'>At Loved Jeans we know how hard it is to buy well fitting jeans, especially online. So to make sure that the jeans you buy will fit you we measure every pair of jeans and we list them as this size. 
+            A lot of jeans differ from the label size, they may shrink or stretch over time, they may have been taken up or in and they may never have had the right label on in the first place. To work out what size you need please follow these simple steps
+          </p>
+          <h3 class='ispe-title'>
+            <strong>Waist Size</strong>
+          </h3>
+          <div id='waist-size-container'>
+            <ul class='ispe-text' id='imlist'>
+              <li>Take a pair of well fitting jeans.</li>
+              <li>Lie them flat.</li>
+              <li>Measure from one side of the waist band to the other without stretching.</li>
+              <li>Double this size in inches to give your waist size.</li>
+            </ul>
+            {% load static %}
+            <img id='measure-img' src="{% static 'media/measure_example.jpg' %}"" alt='' width='240' height='100%'>
+          </div>
+          <table id='waist-size-table'><tbody>
+            <tr><td class='t'>Waist Size (Inches)</td><td class='t'>26</td><td class='t'>28</td><td class='t'>30</td><td class='t'>32</td><td class='t'>34</td><td class='t'>36</td><td class='t'>38</td></tr>
+            <tr><td class='t'>Jeans Size (UK)</td><td class='t'>6</td><td class='t'>8</td><td class='t'>10</td><td class='t'>12</td><td class='t'>14</td><td class='t'>16</td><td class='t'>18</td></tr>
+            <tr><td class='t'>Jeans Size (European)</td><td class='t'>32</td><td class='t'>34</td><td class='t'>36</td><td class='t'>38</td><td class='t'>40</td><td class='t'>42</td><td class='t'>44</td></tr>
+            <tr><td class='t'>Jeans Size (USA)</td><td class='t'>2</td><td class='t'>4</td><td class='t'>6</td><td class='t'>8</td><td class='t'>10</td><td class='t'>12</td><td class='t'>14</td></tr>
+          </tbody></table>
+          <h3 class='ispe-title'><strong>Inside Leg:</strong></h3><ul><li>Measure from crotch to bottom of the hem, without stretching.</li><li>If this is an uneven number round up to the nearest even number, ie, 29 inches would be 30 inches.</li></ul>
+          <div id='inside-leg-container'>
+            <table class='inside-leg-table'><tbody>
+              <tr><th class='t' colspan='2'>Womens</th></tr>
+              <tr><th class='t'>Height</th><th class='t'>Length</th></tr>
+              <tr><td class='t'>4'11 - 5'2</td><td class='t'>Extra Short - 28 in</td></tr>
+              <tr><td class='t'>5'2 - 5'4</td><td class='t'>Short - 30 in</td></tr>
+              <tr><td class='t'>5'5 - 5'7</td><td class='t'>Regular - 32 in</td></tr>
+              <tr><td class='t'>5'8 - 5'10</td><td class='t'>Long - 34 in</td></tr>
+              <tr><td class='t'>5'10 - 6'1</td><td class='t'>Extra Long - 36 in</td></tr>
+            </tbody></table>
+
+            <table class='inside-leg-table'><tbody>
+              <tr><th class='t' colspan='2'>Mens</th></tr>
+              <tr><th class='t'>Height</th><th class='t'>Length</th></tr>
+              <tr><td class='t'>4'11 - 5'3</td><td class='t'>Extra Short - 28 in</td></tr>
+              <tr><td class='t'>5'3 - 5'7</td><td class='t'>Short - 30 in</td></tr>
+              <tr><td class='t'>5'7 - 5'11</td><td class='t'>Regular - 32 in</td></tr>
+              <tr><td class='t'>5'11 - 6'3</td><td class='t'>Long - 34 in</td></tr>
+              <tr><td class='t'>6'3 - 6'7</td><td class='t'>Extra Long - 36 in</td></tr></tbody></table>
+            </div>
+          </div>
+
+          <div class='spe-list' id='shi-list' style='display:none'>
+            <h2 class='ispe-title'><strong>Shipping</strong></h2>
+            <p class='ispe-text'>Same day dispatch on all orders before 2pm</p>
+            <p class='ispe-text'>All orders placed before 2pm Monday to Friday will be dispatched that same day. If you place an order on a Friday after 2pm it will be dispatched the following Monday.</p>
+            <h3 class='ispe-title'><strong>Shipping on all UK orders is free</strong></h3>
+            <p class='ispe-text'>Our standard UK service is Hermes Tracked and is free of charge. You should receive your order within 2-3 working days from the date of dispatch. Unfortunately we are not able to guarantee a specific shipping date. If you are out, a calling card will be left and you will need to arrange re-shipping yourself or collect the item from your nearest Hermes depot. If you fail to collect your item within the required time, it will be returned to us and re-dispatched at your cost.</p>
+            <h3 class='ispe-title'><strong>European Shipping</strong></h3>
+            <p class='ispe-text'>Our standard European service is Royal Mail International Tracked, and costs from £8.50. You should receive your order within 2-6 working days from the date of dispatch. Unfortunately we are not able to guarantee a specific shipping date. The charge for this service is determined by your location. This charge is confirmed both in your basket and before you make your payment.</p>
+            <h3 class='ispe-title'><strong>International Shipping (Rest Of The World)</strong></h3>
+            <p class='ispe-text'>Our standard International service is Royal Mail International Tracked, and costs from £15.50. You should receive your order within 3-7 working days from the date of dispatch. Unfortunately we are not able to guarantee a specific shipping date. The charge for this service is determined by the weight of your parcel. This charge is confirmed both in your basket and before you make your payment.</p>
+          </div>
+
+          <div class='spe-list' id='ret-list' style='display:none'>
+            <h1 class='ispe-title'>
+              <strong>Returns Policy</strong>
+            </h1>
+            <p class='ispe-text'>We aim to process your return within 1 working day of it arriving on our premises. All returns for a refund must be organised within 30 days of placing your order. Items to be returned must be in their original condition and as originally described and photographed.</p>
+            <h2 class='ispe-title'><strong>Returns Procedure</strong></h2>
+            <p class='ispe-text'>If you would like to return an item(s) please print out your original order confirmation that was emailed to you when you completed the purchase and include this in the package. Please send your item back to the address below. We advise that all items are returned in suitable packaging to protect the product in transit. To ensure that your package arrives safely to our warehouse we normally advise that items are posted back via a signed on delivery service. We are not liable for any packages lost or damaged in the post.</p>
+            <p class='ispe-text'><strong>RETURNS<br>FINMERE COTTAGE<br>MERE ROAD<br>FINMERE<br>BUCKS<br>MK18 4AR</p></strong>
+            <p class='ispe-text'>Once the returned goods have been received, checked and verified, your card or PayPal account will be credited. We aim to process the return and refund within 3 working days of it arriving on our premises but please allow up to 14 days. </p>
+            <p class='ispe-text'><i>Please be aware that customers are responsible for the cost of return postage unless the items is faulty or not correctly described</i></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="item-right-col"></div>
+  </div>
+  <div id='more-items-div'>
+    <h2>You May Also Like:</h2>
+    <div id='more-items'>
+    {% for item in more_items %}
+      <div class='more-items-box'>
+        <a href="{% url 'item' sku=item.sku %}">
+          {% load static %}
+          <img class='product-image' alt='This image could not be displayed' src="https://www.lovedjeans.co.uk/{{ item.image_title|first }}">
+        </a>
+        <a class="title-jquery" href="{% url 'item' sku=item.sku %}">
+          <h3 class='product-title'>{{ item.title }}</h3>
+        </a>
+        <p class='more-items-price'><i>£{{ item.price }}</i></p>
+      </div>
+    {% endfor %}
+    </div>
+  </div>
+</div>
+{% load static %}
+<script src="{% static 'js/slider.js' %}"></script>
+<script>
+const item_images = JSON.parse("{{ item.image_title }}".replaceAll("&#x27;",'"'));
+var current_image = 0;
+function add_to_cart(obj, just_add) {
+  let main_box = obj.parents('div').parents('div').parents('div');
+  let price = main_box.children('div#imgs-container').children('div#purchase-buttons').children('p#purchase-price').text().substr(1);
+  let title =  main_box.children('h2#purchase-title').text();
+  let sku = main_box.children('p.hidden').text();
+  $.post(
+      '/add_to_cart/',
+      {
+          'price': price,
+          'title': title,
+          'sku': sku
+      },
+      function () {
+          if (just_add) {
+              $('button#add-to-cart').text('Added To Cart');
+              $('button#add-to-cart').attr('id', 'added-to-cart');
+              $("#view-cart-item").css("display", "block");
+              fix_checkout_display();
+          } else {
+            document.location.href = "{% url 'cart' %}";
+          }
+      }
+  );
+}
+</script>
+{% endblock %}

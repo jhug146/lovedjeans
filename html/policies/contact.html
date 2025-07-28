@@ -1,0 +1,28 @@
+{% extends "base-template.html" %}
+
+{% block title %}
+<title>Lovedjeans - Contact Us</title>
+{% endblock %}
+
+{% block main %}
+<div id='policy-main'>
+  <h1>Contact Us</h1>
+  <h3 class='contact-title'>jubblyjeans@gmail.com</h3>
+  <form id='contact-form' action="{% url 'contact_form' %}" method="post"> {% csrf_token %}
+    <label for='email-contact'>Your Email:</label><input pattern="^((([!#$%&'*+\-/=?^_`{|}~\w])|([!#$%&'*+\-/=?^_`{|}~\w][!#$%&'*+\-/=?^_`{|}~\.\w]{0,}[!#$%&'*+\-/=?^_`{|}~\w]))[@]\w+([-.]\w+)*\.\w+([-.]\w+)*)$" id='email-contact' type='text' name='email' placeholder='Your email' required>
+    <label for='question-contact'>Your Message:</label><textarea id='question-contact' placeholder='Your message' rows='7' name='info' required></textarea>
+    <div class="g-recaptcha" data-sitekey="6LdMvKAqAAAAANgsuQeP0zZuSLk-b030Pg2qNRB6"></div>
+    <input value='Submit' type='submit' id='contact-submit'>
+  </form>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <script>
+    $("form").submit(function(event) {
+      var recaptcha = $("#g-recaptcha-response").val();
+      if (recaptcha === "") {
+        event.preventDefault();
+        alert("Please check the recaptcha");
+      }
+    });
+  </script>
+</div>
+{% endblock %}
