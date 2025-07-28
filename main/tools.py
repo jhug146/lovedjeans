@@ -4,7 +4,6 @@ import sys
 import time
 import threading
 import json
-from numpy import full
 import requests
 import urllib.request
 from PIL import Image

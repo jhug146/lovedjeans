@@ -4,10 +4,9 @@ from django.http import Http404, HttpResponse, HttpResponseNotAllowed, JsonRespo
 from django.views.decorators.csrf import csrf_exempt
 from django import utils
 from django.contrib.auth import authenticate, login
-from django.core.exceptions import ObjectDoesNotExist
 from .forms import SearchForm
 from . import tools, models
-import requests, json, simplejson, datetime, io, csv, os
+import json, simplejson, datetime, io, csv
 from dotenv import load_dotenv
 load_dotenv()
 
