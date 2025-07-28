@@ -1,0 +1,12 @@
+Firstly, follow this guide: https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu#step-1-installing-the-packages-from-the-ubuntu-repositories
+DONT SKIP ANY STEPS, DO IT IN ORDER (especially the Python venv stuff and SQL users stuff)
+Use MySQL instead of PostGres
+Very useful when you inevitably mess up the user permissions: https://www.digitalocean.com/community/tutorials/how-to-create-a-new-user-and-grant-permissions-in-mysql
+Make sure to give all permissions to root user for /staticfiles/ and also update Nginx's config file (nginx.conf) to make it's user root instead of www-data (probably a bad idea but it works)
+Easiest way to do SSL: https://syscrews.medium.com/deploy-django-with-nginx-gunicorn-and-ssl-certificate-ce7d037c7507
+
+useful for git:  https://stackoverflow.com/questions/6335681/how-do-i-get-the-latest-version-of-my-code
+https://stackoverflow.com/questions/35868976/nginx-service-failed-because-the-control-process-exited
+doing both www and non-www domains: https://docs.vultr.com/nginx-redirects-for-non-www-sub-domains-to-www
+
+use alias not root for static files: https://stackoverflow.com/questions/26237936/fetching-static-files-failed-with-404-in-nginx

@@ -1,0 +1,155 @@
+{% extends "base-template.html" %}
+
+{% block extra_head %}
+<script>
+window.addEventListener( "pageshow", function ( event ) {
+  var historyTraversal = event.persisted || ( typeof window.performance !== "undefined" && window.performance.navigation.type === 2 );
+  if ( historyTraversal ) {
+    window.location.reload();
+  }
+});
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+{% endblock %}
+
+{% block title %}
+<title>Lovedjeans - {{ gender }} {{ brand }} Jeans</title>
+{% endblock %}
+
+{% block main %}
+<div id='items-page-main'>
+  <div id='left-col'></div>
+  <div id='main-col'>
+    <div id='main-view'>
+      <div id="main-form">
+        <form action="{% url 'items' %}" method="get" id="main-search-form"> 
+          <div id='search-bar'>
+            <div id='search-bar-div'>
+                {% load static %}
+                <img id='search-icon' src="{% static 'media/search-icon.png' %}">
+                <input name='search' id='search-input' value="{{ form_values.final.search }}">
+            </div>
+          </div>
+          <div id='top-bar-search'>
+            <div id='results-number-div'>
+              <h3 id='results-number'>{{ results_number }} results found</h3>
+            </div>
+            <div id='sort-by'>
+              <select id='sort-choice' name='ord'>
+                <option value='bm' {% if form_values.final.ord.0.1 %}selected="true"{% endif %}>Best Match</option>
+                <option value='lp' {% if form_values.final.ord.1.1 %}selected="true"{% endif %}>Lowest Price</option>
+                <option value='hp' {% if form_values.final.ord.2.1 %}selected="true"{% endif %}>Highest Price</option>
+                <option value='mrf' {% if form_values.final.ord.3.1 %}selected="true"{% endif %}>Most Recent</option>
+              </select>
+            </div>
+          </div>
+          <button type='button' id='mobile-search-form'>Filter and Sort                +</button>
+          <div id='side-form'>
+            <h3>Gender</h3>
+            <input name='gen' type='checkbox' id='womens-choice-radio' value='women' {% if form_values.final.gender.1 %}checked{% endif %}>
+            <label for='womens-choice-radio'>Womens</label><br>
+            <input name='gen' type='checkbox' id='mens-choice-radio' value='men' {% if form_values.final.gender.0 %}checked{% endif %}>
+            <label for='mens-choice-radio'>Mens</label><br>
+
+            <h3>Waist Size</h3>
+            {% for ws in form_values.final.ws %}
+              <input name="ws" id="ws-{{ ws.0 }}" type="checkbox" class="bubble-button" value="{{ ws.0 }}" {% if ws.1 %}checked{% endif %}>
+              <label for="ws-{{ ws.0 }}">{{ ws.0 }}</label>
+            {% endfor %}
+
+            <h3>Inside Leg</h3>
+            {% for il in form_values.final.il %}
+              <input name='il' type='checkbox' id='il-{{ il.0 }}' value='{{ il.0 }}' {% if il.1 %}checked{% endif %}>
+              <label for='il-{{ il.0 }}'>{{ il.0 }}</label><br>
+            {% endfor %}
+
+            <h3>Style</h3>
+            {% for style in form_values.final.st %}
+              <input name='st' type='checkbox' id='st-{{ style.0 }}' value='{{ style.0 }}' {% if style.1 %}checked{% endif %}>
+              <label for='st-{{ style.0 }}'>{{ style.0 }}</label><br>
+            {% endfor %}
+
+            <h3>Brand</h3>
+            {% for brand in form_values.final.br %}
+              <input name='br' type='checkbox' id='br-{{ brand.0 }}' value='{{ brand.0 }}' {% if brand.1 %}checked{% endif %}>
+              <label for='br-{{ brand.0 }}'>{{ brand.0 }}</label><br>
+            {% endfor %}
+
+            <h3>Colour</h3>
+            {% for colour in form_values.final.col %}
+              <input name='col' type='checkbox' id='co-{{ colour.0 }}' value='{{ colour.0 }}' {% if colour.1 %}checked{% endif %}>
+              <label for='co-{{ colour.0 }}'>{{ colour.0 }}</label><br>
+            {% endfor %}
+
+            <h3>Condition</h3>
+            {% for condition in form_values.final.con %}
+              <input name='con' type='checkbox' id='cn-{{ condition.0 }}' value='{{ condition.0 }}' {% if condition.1 %}checked{% endif %}>
+              <label for='cn-{{ condition.0 }}'>{{ condition.0 }}</label><br>
+            {% endfor %}
+
+            <h3>Closure</h3>
+            {% for closure in form_values.final.cl %}
+              <input name='clo' type='checkbox' id='cl-{{ closure.0 }}' value='{{ closure.0 }}' {% if closure.1 %}checked{% endif %}>
+              <label for='cl-{{ closure.0 }}'>{{ closure.0 }}</label><br>
+            {% endfor %}
+          </div>
+          <div id="products-list">
+            {% if results %}
+              {% for item in results %}
+                <div class="product-container" id='pc-{{ item.sku }}'>
+                  <a href="{% url 'item' sku=item.sku %}">
+                    {% load static %}
+                    <img class='product-image' alt='This image could not be displayed' src="http://www.lovedjeans.co.uk/{{ item.image_title|first}}">
+                  </a>
+                  <a class="title-jquery" href="{% url 'item' sku=item.sku %}">
+                    <p class='product-title'>{{ item.title }}</p>
+                  </a>
+                  <button type='button' {% if item.sku in skus %}class='products-added'{% else %}class='products-button'{% endif %}>{% if item.sku in skus %}Added to Cart{% else %}Add to Cart{% endif %}</button>
+                  <p class='product-price'>£{{ item.price }}</p>
+                  <a href="{% url 'cart' %}" class='view-cart-hidden' {% if item.sku in skus %}style='display:block;text-decoration:underline'{% endif %}>View Cart</a>
+                  <p class='hidden'>{{ item.sku }}</p>
+                </div>
+              {% endfor %}
+            {% else %}
+              <p>No items were found</p>
+            {% endif %}
+          </div>
+          <input value="{{ page }}" id='page-num' type='text' class='hidden' name='pg'>
+          <input type="submit" id="sub"><br>
+        </form>
+      </div>
+    </div>
+    <div id="page-buttons">
+      <div id="page-buttons-div">
+        <button type='button' id="prev-page">&lt</button><p id="page-display">Page {{page}} of {{pages}}</p><button type='button' id="next-page">&gt</button>
+      </div>
+    </div>
+  </div>
+  <div id="right-col"></div>
+</div>
+{% load static %}
+<script src="{% static 'js/search.js' %}"></script>
+<script>
+$(document).ready( function () {
+  $('#next-page').click(function (event) {
+    let page = "{{ page|safe }}";
+    let pages = "{{ pages|safe }}";
+    if (Number(page) < Number(pages)) {
+      page = Number(page) + 1;
+      $('#page-num').text(page);
+      $('#page-num').attr('value', page);
+      document.getElementById('main-search-form').submit();
+    }
+  })
+  $('#prev-page').click(function (event) {
+    let page = "{{ page|safe }}";
+    if (Number(page) > 1) {
+      page = Number(page) - 1;
+      $('#page-num').text(page);
+      $('#page-num').attr('value', page);
+      document.getElementById('main-search-form').submit();
+    }
+  })
+})
+</script>
+{% endblock %}

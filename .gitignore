@@ -1,0 +1,6 @@
+.env
+lovedjeansvenv
+staticfiles/media/product-images
+lovedjeans/__pycache__
+main/__pycache__
+main/migrations/__pycache__

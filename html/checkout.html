@@ -1,0 +1,421 @@
+{% extends "base-template.html" %}
+
+{% block title %}
+<title>Loved Jeans - Checkout</title>
+{% endblock %}
+
+{% block main %}
+<div id='checkout-final-main'>
+  <form action="{% url 'payment' %}" id='checkout-form' method='post'> {% csrf_token %}
+    <p id='checkout-cart-hidden' class='hidden'>{{ cart }}</p>
+    <h3>Shipping Address:</h3>
+    <div id='buyer-info'>
+      <input placeholder='First Name' type='text' name='firstname' required id='postcode-firstname'>
+      <input placeholder='Surname' type='text' name='surname' required id='postcode-surname'>
+      <input placeholder='Email' type='text' name='email' required id='postcode-email'>
+      <input placeholder='Phone Number' type='text' name='phone' id='postcode-phonenumber' required>
+      <input placeholder='Address 1' type='text' name='address1' id='postcode-address1' required>
+      <input placeholder='Address 2' type='text' name='address2' id='postcode-address2' required>
+      <input placeholder='Town' type='text' name='town' id='postcode-town' id='postcode-town' required>
+      <input placeholder='State/County' type='text' name='county' id='postcode-county' required>
+      <input placeholder='Postcode' type='text' name='postcode' id='postcode-input' required>
+      <select id='postcode-country' required>
+        <option value="GB">United Kingdom</option>
+        <option value="US">United States</option>
+        <option value="AU">Australia</option>
+        <option value="DE">Germany</option>
+        <option value="FR">France</option>
+        <option value="CA">Canada</option>
+        <option disabled>----------------------------</option>
+        <option value="AF">Afghanistan</option>
+        <option value="AL">Albania</option>
+        <option value="DZ">Algeria</option>
+        <option value="AS">American Samoa</option>
+        <option value="AD">Andorra</option>
+        <option value="AO">Angola</option>
+        <option value="AI">Anguilla</option>
+        <option value="AQ">Antarctica</option>
+        <option value="AG">Antigua and Barbuda</option>
+        <option value="AR">Argentina</option>
+        <option value="AM">Armenia</option>
+        <option value="AW">Aruba</option>
+        <option value="AT">Austria</option>
+        <option value="AZ">Azerbaijan</option>
+        <option value="BS">Bahamas</option>
+        <option value="BH">Bahrain</option>
+        <option value="BD">Bangladesh</option>
+        <option value="BB">Barbados</option>
+        <option value="BY">Belarus</option>
+        <option value="BE">Belgium</option>
+        <option value="BZ">Belize</option>
+        <option value="BJ">Benin</option>
+        <option value="BM">Bermuda</option>
+        <option value="BT">Bhutan</option>
+        <option value="BO">Bolivia</option>
+        <option value="BA">Bosnia and Herzegovina</option>
+        <option value="BW">Botswana</option>
+        <option value="BV">Bouvet Island</option>
+        <option value="BR">Brazil</option>
+        <option value="BN">Brunei</option>
+        <option value="BG">Bulgaria</option>
+        <option value="BF">Burkina Faso</option>
+        <option value="BI">Burundi</option>
+        <option value="KH">Cambodia</option>
+        <option value="CM">Cameroon</option>
+        <option value="CV">Cape Verde</option>
+        <option value="KY">Cayman Islands</option>
+        <option value="CF">Central African Republic</option>
+        <option value="TD">Chad</option>
+        <option value="CL">Chile</option>
+        <option value="CN">China</option>
+        <option value="CO">Colombia</option>
+        <option value="KM">Comoros</option>
+        <option value="CG">Congo</option>
+        <option value="CD">Congo, the Democratic Republic of the</option>
+        <option value="CK">Cook Islands</option>
+        <option value="CR">Costa Rica</option>
+        <option value="CI">Côte d'Ivoire</option>
+        <option value="HR">Croatia</option>
+        <option value="CU">Cuba</option>
+        <option value="CW">Curaçao</option>
+        <option value="CY">Cyprus</option>
+        <option value="CZ">Czech Republic</option>
+        <option value="DK">Denmark</option>
+        <option value="DJ">Djibouti</option>
+        <option value="DM">Dominica</option>
+        <option value="DO">Dominican Republic</option>
+        <option value="EC">Ecuador</option>
+        <option value="EG">Egypt</option>
+        <option value="SV">El Salvador</option>
+        <option value="GQ">Equatorial Guinea</option>
+        <option value="ER">Eritrea</option>
+        <option value="EE">Estonia</option>
+        <option value="ET">Ethiopia</option>
+        <option value="FK">Falkland Islands (Malvinas)</option>
+        <option value="FO">Faroe Islands</option>
+        <option value="FJ">Fiji</option>
+        <option value="FI">Finland</option>
+        <option value="GF">French Guiana</option>
+        <option value="PF">French Polynesia</option>
+        <option value="GA">Gabon</option>
+        <option value="GM">Gambia</option>
+        <option value="GE">Georgia</option>
+        <option value="GH">Ghana</option>
+        <option value="GI">Gibraltar</option>
+        <option value="GR">Greece</option>
+        <option value="GL">Greenland</option>
+        <option value="GD">Grenada</option>
+        <option value="GP">Guadeloupe</option>
+        <option value="GU">Guam</option>
+        <option value="GT">Guatemala</option>
+        <option value="GG">Guernsey</option>
+        <option value="GN">Guinea</option>
+        <option value="GW">Guinea-Bissau</option>
+        <option value="GY">Guyana</option>
+        <option value="HT">Haiti</option>
+        <option value="HN">Honduras</option>
+        <option value="HK">Hong Kong</option>
+        <option value="HU">Hungary</option>
+        <option value="IS">Iceland</option>
+        <option value="IN">India</option>
+        <option value="ID">Indonesia</option>
+        <option value="IR">Iran</option>
+        <option value="IQ">Iraq</option>
+        <option value="IE">Ireland</option>
+        <option value="IL">Israel</option>
+        <option value="IT">Italy</option>
+        <option value="JM">Jamaica</option>
+        <option value="JP">Japan</option>
+        <option value="JE">Jersey</option>
+        <option value="JO">Jordan</option>
+        <option value="KZ">Kazakhstan</option>
+        <option value="KE">Kenya</option>
+        <option value="KI">Kiribati</option>
+        <option value="KP">Korea, Democratic People's Republic of</option>
+        <option value="KR">Korea, Republic of</option>
+        <option value="KW">Kuwait</option>
+        <option value="KG">Kyrgyzstan</option>
+        <option value="LA">Laos</option>
+        <option value="LV">Latvia</option>
+        <option value="LB">Lebanon</option>
+        <option value="LS">Lesotho</option>
+        <option value="LR">Liberia</option>
+        <option value="LY">Libya</option>
+        <option value="LI">Liechtenstein</option>
+        <option value="LT">Lithuania</option>
+        <option value="LU">Luxembourg</option>
+        <option value="MO">Macao</option>
+        <option value="MK">Macedonia</option>
+        <option value="MG">Madagascar</option>
+        <option value="MW">Malawi</option>
+        <option value="MY">Malaysia</option>
+        <option value="MV">Maldives</option>
+        <option value="ML">Mali</option>
+        <option value="MT">Malta</option>
+        <option value="MH">Marshall Islands</option>
+        <option value="MR">Mauritania</option>
+        <option value="MU">Mauritius</option>
+        <option value="MX">Mexico</option>
+        <option value="FM">Micronesia</option>
+        <option value="MD">Moldova</option>
+        <option value="MC">Monaco</option>
+        <option value="MN">Mongolia</option>
+        <option value="ME">Montenegro</option>
+        <option value="MA">Morocco</option>
+        <option value="MZ">Mozambique</option>
+        <option value="MM">Myanmar</option>
+        <option value="NA">Namibia</option>
+        <option value="NR">Nauru</option>
+        <option value="NP">Nepal</option>
+        <option value="NL">Netherlands</option>
+        <option value="NZ">New Zealand</option>
+        <option value="NI">Nicaragua</option>
+        <option value="NE">Niger</option>
+        <option value="NG">Nigeria</option>
+        <option value="NU">Niue</option>
+        <option value="NO">Norway</option>
+        <option value="OM">Oman</option>
+        <option value="PK">Pakistan</option>
+        <option value="PA">Panama</option>
+        <option value="PG">Papua New Guinea</option>
+        <option value="PY">Paraguay</option>
+        <option value="PE">Peru</option>
+        <option value="PH">Philippines</option>
+        <option value="PL">Poland</option>
+        <option value="PT">Portugal</option>
+        <option value="PR">Puerto Rico</option>
+        <option value="QA">Qatar</option>
+        <option value="RE">Réunion</option>
+        <option value="RO">Romania</option>
+        <option value="RU">Russia</option>
+        <option value="RW">Rwanda</option>
+        <option value="BL">Saint Barthélemy</option>
+        <option value="SH">Saint Helena</option>
+        <option value="KN">Saint Kitts and Nevis</option>
+        <option value="LC">Saint Lucia</option>
+        <option value="MF">Saint Martin (French part)</option>
+        <option value="PM">Saint Pierre and Miquelon</option>
+        <option value="VC">Saint Vincent and the Grenadines</option>
+        <option value="WS">Samoa</option>
+        <option value="SM">San Marino</option>
+        <option value="ST">Sao Tome and Principe</option>
+        <option value="SA">Saudi Arabia</option>
+        <option value="SN">Senegal</option>
+        <option value="RS">Serbia</option>
+        <option value="SC">Seychelles</option>
+        <option value="SL">Sierra Leone</option>
+        <option value="SG">Singapore</option>
+        <option value="SK">Slovakia</option>
+        <option value="SI">Slovenia</option>
+        <option value="SB">Solomon Islands</option>
+        <option value="SO">Somalia</option>
+        <option value="ZA">South Africa</option>
+        <option value="SS">South Sudan</option>
+        <option value="ES">Spain</option>
+        <option value="LK">Sri Lanka</option>
+        <option value="SD">Sudan</option>
+        <option value="SR">Suriname</option>
+        <option value="SZ">Swaziland</option>
+        <option value="SE">Sweden</option>
+        <option value="CH">Switzerland</option>
+        <option value="SY">Syria</option>
+        <option value="TW">Taiwan</option>
+        <option value="TJ">Tajikistan</option>
+        <option value="TZ">Tanzania</option>
+        <option value="TH">Thailand</option>
+        <option value="TG">Togo</option>
+        <option value="TK">Tokelau</option>
+        <option value="TO">Tonga</option>
+        <option value="TT">Trinidad and Tobago</option>
+        <option value="TN">Tunisia</option>
+        <option value="TR">Turkey</option>
+        <option value="TM">Turkmenistan</option>
+        <option value="TV">Tuvalu</option>
+        <option value="UG">Uganda</option>
+        <option value="UA">Ukraine</option>
+        <option value="AE">United Arab Emirates</option>
+        <option value="UY">Uruguay</option>
+        <option value="UZ">Uzbekistan</option>
+        <option value="VU">Vanuatu</option>
+        <option value="VE">Venezuela</option>
+        <option value="VN">Vietnam</option>
+        <option value="EH">Western Sahara</option>
+        <option value="YE">Yemen</option>
+        <option value="ZM">Zambia</option>
+        <option value="ZW">Zimbabwe</option>
+      </select>
+    </div>
+    <div id='postcode-select-div'>
+      <select id='postcode-select'></select>
+    </div>
+    <h3 style="float: left; width: 100%; margin-left: 0">Shipping Type:</h3>
+    <div id='payment-info'>
+      <select id='checkout-region-select' name='region'>
+        <option value='UK' selected>UK</option>
+        <option value='EUR'>Europe (outside UK)</option>
+        <option value='ROW'>Rest Of World</option>
+      </select>
+      <div id='checkout-shipping'></div>
+    </div>
+    <div id="checkout-captcha" class="g-recaptcha" data-sitekey="6LdMvKAqAAAAANgsuQeP0zZuSLk-b030Pg2qNRB6"></div>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <div id='payment-div'>
+      <div id='total-price'>
+        <p id='p-price' class='same-line'>Price: £{{ total }}</p>
+        <p id='p-postage' class='same-line'></p>
+        <p id='p-total'></p>
+      </div>
+      <input type='submit' id='proceed-payment' value='Proceed To Payment'>
+     </div>
+     <input id='hidden-details' type='hidden' name='details'>
+     <script>
+        function get_request_body() {
+          let region = $("#checkout-region-select").val();
+          if (region === "UK") {
+            if ($("#region-UK-1").is(':checked')) {
+              region = "UK-1";
+            } else if ($("#region-UK-2").is(':checked')) {
+              region = "UK-2";
+            }
+          }
+          const fields = ["#postcode-firstname", "#postcode-surname","#postcode-input","#postcode-address1","#postcode-address2","#postcode-town","#postcode-email","#postcode-phonenumber","#postcode-country"];
+          for (let i=0; i<fields.length; i+=1) {
+            if (!$(fields[i]).val()) {
+              alert("Please fill in all fields");
+              return undefined;
+            }
+          }
+          let request_body = JSON.stringify({
+            "cart": JSON.parse("{{ js_data }}".replaceAll("&quot;",'"')),
+            "shipping": {
+                "firstname": $("#postcode-firstname").val(),
+                "surname": $("#postcode-surname").val(),
+                "postcode": $("#postcode-input").val(),
+                "address1": $("#postcode-address1").val(),
+                "address2": $("#postcode-address2").val(),
+                "address3": $("#postcode-town").val(),
+                "address4": $("#postcode-county").val(),
+                "email": $("#postcode-email").val(),
+                "phonenumber": $("#postcode-phonenumber").val(),
+                "country": $("#postcode-country").val(),
+                "method": region,
+                "price": $("#p-price").text(),
+                "postage": $("#p-postage").text(),
+                "total": $("#p-total").text()
+            }});
+          return request_body;
+        }
+        var captcha = "Failure";
+        document.getElementById("proceed-payment").addEventListener("click", function(event){
+          event.preventDefault();
+          validateCaptcha();
+        });
+        async function validateCaptcha() {
+          let body = get_request_body();
+          $("input[name='details']").val(body);
+          if (grecaptcha.getResponse()) {
+            await $.post(
+              "{% url 'checkout_captcha' %}",
+              {
+                "g-recaptcha-response": grecaptcha.getResponse()
+              },
+              function(data) {
+                captcha = data;
+                if (data !== "Success") {
+                  alert("Please complete the captcha");
+                }
+              }
+            );
+            if (captcha === "Success") {
+              $("#checkout-form").submit();
+            }
+          } else {
+            alert("Please complete the captcha")
+          }
+        }
+     </script> 
+  </form>
+</div>
+<script>
+function round2dp(number) {
+  return Math.round((number + Number.EPSILON) * 100) / 100
+}
+const option_values = ["EUR", "ROW"];
+const option_bases = ["8.50", "15.50"];
+const postage_pricing = [
+  [0, 0],
+  [0.99, 0.99],
+  [8.5, 5],
+  [15.5, 5]
+];
+function zeros_append(price) {
+  if (!price.includes(".")) {
+    return price + ".00";
+  }
+  let after_dp = price.split(".")[1].length;
+  if (after_dp < 2) {
+    price += "0" * (2 - after_dp);
+  }
+  return price;
+}
+function change_postage(option) {
+  if (option === 0) {
+    if ($("#region-UK-1").is(':checked')) {
+      option = 0;
+    } else if ($("#region-UK-2").is(':checked')) {
+      option = 1;
+    }
+  } else {
+    option += 1;
+  }
+  let cart = JSON.parse("{{cart}}".replace(/&#x27;/g, '"'));
+  let postage_total = postage_pricing[option][0];
+  postage_total += postage_pricing[option][1] * (cart.cart.length - 1);
+  console.log(postage_total, "{{ total }}")
+  $("#total-price").children().eq(1).text("Postage: £" + zeros_append(String(round2dp(postage_total))));
+  $("#total-price").children().eq(2).text("Total: £" + zeros_append(String(round2dp(postage_total + Number("{{ total }}")))));
+}
+function shipping_select(option) {
+  if (option === 0) {
+    let html = `
+    <div class='shipping-option' index='0'><input class='shipping-option-input' id='region-UK-1' type='radio' name='shipping' value='UK-1' checked><p>UK - Royal Mail Tracked 48</p><p>FREE</p><p>Additional Items: FREE</div>
+    <div class='shipping-option' index='1'><input class='shipping-option-input' id='region-UK-2' type='radio' name='shipping' value='UK-2'><p>UK - Royal Mail Tracked 24</p><p>£0.99</p><p>Additional Items: +£0.99</p></div>
+    `;
+    $('#checkout-shipping').html(html);
+  } else {
+    let html = `<div class='shipping-option' index='0'><input class='shipping-option-input' type='radio' name='shipping' value='£{option_values[option-1]}' checked><p>Standard Delivery</p><p>£${option_bases[option-1]}</p><p>Additional Items: +£5</p></div>`;
+    $('#checkout-shipping').html(html);
+  }
+  $("div.shipping-option").on("click", function(e) {
+    $(this).children("input").prop("checked", true);
+  })
+  change_postage(option);
+  $(".shipping-option").on("click", function(e) {
+    change_postage(0);
+  });
+}
+$(document).ready(function() {
+  shipping_select(0);
+  $(".shipping-option").on("click", function(e) {
+    change_postage(0);
+  });
+  $("#checkout-region-select").on("change", function(e) {
+    shipping_select(e.target.options.selectedIndex);
+  })
+});
+$("#postcode-country").on("change", function(e) {
+  let country = $("#postcode-country").val();
+  const EUR_COUNTRIES = ['AL', 'AD', 'AM', 'BY', 'BA', 'FO', 'GE', 'GI', 'IS', 'IM', 'XK', 'LI', 'MK', 'MD', 'MC', 'NO', 'RU', 'SM', 'RS', 'CH', 'TR', 'UA', 'VA', 'AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR', 'DE', 'GR', 'HU', 'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL', 'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'SE']
+  if (country === "GB") {
+    $("#checkout-region-select").val("UK");
+    shipping_select(0);
+  } else if (EUR_COUNTRIES.includes(country)) {
+    $("#checkout-region-select").val("EUR");
+    shipping_select(1);
+  } else {
+    $("#checkout-region-select").val("ROW");
+    shipping_select(2);
+  }
+})
+</script>
+{% endblock %}

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang = 'en'>
+<head>
+  <meta name="google-site-verification" content="ekUcCzv2MOKoimuqqYlU_nA9J8mBOxt9ubhtMwdKAS8" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+  <meta charset="utf-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- TODO fill in the following meta tags -->
+  <meta name="keywords" content="Jeans, Designer, Diesel, G-Star, Superdry, Edwin, Nudie, Replay, Tommy Hilfiger, HUGO BOSS, Worldwide Delivery, 2nd Hand, Preloved, Recycled, Free Delivery For UK, Same Day Dispatch">
+  <meta name="description" content="Pre-loved designer jeans with free UK delivery and same day dispatch from Top Brands: Diesel, G-Star, Superdry, Edwin, Nudie, Replay, Tommy Hilfiger, HUGO BOSS, Worldwide Delivery, 2nd Hand, Preloved, Recycled">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  {% load static %}
+  <script src="{% static 'js/main.js' %}"></script>
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/main-style.css' %}">
+  <link rel="shortcut icon" type="image/png" href="{% static 'favicon.png' %}"/>
+  {% block title %}{% endblock %}
+  {% block extra_head %}{% endblock %}
+</head>
+<body id='home-body'>
+  <header>
+    <div id='header-div'>
+      <ul id='header-ul-desktop'>
+        <a href="{% url 'index' %}">
+          <li class='header-box'>Home</li>
+        </a>
+        <a href="{% url 'items' %}?gen=men">
+          <li class='header-box'>Mens</li>
+        </a>
+        <a href="{% url 'items' %}?gen=women">
+          <li class='header-box'>Womens</li>
+        </a>
+        <a href="{% url 'sizings' %}">
+          <li class='header-box'>Sizings</li>
+        </a>
+        <a href="{% url 'returns' %}">
+          <li class='header-box'>Returns</li>
+        </a>
+        <a href="{% url 'shipping' %}">
+          <li class='header-box'>Shipping</li>
+        </a>
+        <li id='header-checkout'>
+          <a class='header-checkout-link' href="{% url 'cart' %}">
+            <div class='header-checkout-image'></div><p class='checkout-display'>{{ request.session.cart|length }}: </p>
+          </a>
+        </li>
+      </ul>
+      <div id='header-mobile'>
+        <div id='header-dropdown'>
+          {% load static %}
+          <img id='header-dropdown-button' src="{% static 'media/header_icon.png' %}">
+          <div class='header-dropdown-content'>
+            <a href="{% url 'index' %}">Home</a>
+            <a href="{% url 'items' %}?gen=men">Mens</a>
+            <a href="{% url 'items' %}?gen=women">Womens</a>
+            <a href="{% url 'sizings' %}">Sizings</a>
+            <a href="{% url 'returns' %}">Returns</a>
+            <a href="{% url 'shipping' %}">Shipping</a>
+          </div>
+        </div>
+        <a class='header-checkout-link' href="{% url 'cart' %}">
+          {% load static %}
+          <div class='header-checkout-image'></div><p class='checkout-display'></p>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <noscript>
+    <style>
+      #js-warning-bg {
+        background-color: #e5e5e5;
+        opacity: 50%;
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 9;
+      }
+      #js-warning {
+        background-color: #133e72;
+        position: fixed;
+        top: 30vh;
+        left: 30vw;
+        width: 40vw;
+        height: 40vh;
+        z-index: 10;
+        border-radius: 10%;
+      }
+      #js-warning * {
+        margin: 2vw;
+        text-align: center;
+      }
+      @media only screen and (max-width: 800px) {
+        #js-warning p {
+          font-size: 3vh;
+        }
+        #js-warning h1 {
+          font-size: 5vh;
+        }
+      }
+      @media only screen and (min-width: 800px) {
+        #js-warning p {
+          font-size: 1.5vw;
+        }
+        #js-warning h1 {
+          font-size: 3vw;
+        }
+      }
+    </style>
+    <div id='js-warning-bg'></div>
+    <div id='js-warning'>
+      <h1>JavaScript Disabled</h1>
+      <p>Your web browser has JavaScript disabled and therefore features on this site such as the shopping cart will not work.</p>
+      <p>Please consider enabling JavaScript in your web browser's settings and refreshing the page.</p>
+    </div>
+  </noscript>
+  <main id='colour-block'>
+  {% block main %}{% endblock %}
+  </main>
+  
+  <script>
+    function fix_checkout_display() {
+      $.post('/session/checkout_info', function(data) {
+        let split = data.split(':');
+        let dp_position = split[1].indexOf(".");
+        if (split[1].substring(dp_position, split[1].length-1).length === 1) {
+          split[1] += "0";
+        }
+        $('.checkout-display').text(split[0] + ": £" + split[1]); 
+      });
+      
+    }
+    $(document).ready(function() {
+      fix_checkout_display();
+    });
+  </script>
+  <footer id='footer'>
+    <div id='footer-customer'>
+      <h4>Customer Care</h4>
+      <div class='footer-vertical-list'>
+        <a href="{% url 'faq' %}" class='footer-link'>FAQ</a>
+        <a href="{% url 'shipping' %}" class='footer-link'>Shipping</a>
+        <a href="{% url 'returns' %}" class='footer-link'>Returns</a>
+        <a href="{% url 'sizings' %}" class='footer-link'>Sizing</a>
+      </div>
+    </div>
+    <div id='footer-info'>
+      <h4>Information</h4>
+      <div class='footer-vertical-list'>
+        <a href="{% url 'terms' %}" class='footer-link'>Terms Of Service</a>
+        <a href="{% url 'contact' %}" class='footer-link'>Contact Us</a>
+        <a href="{% url 'refunds' %}" class='footer-link'>Refund Policy</a>
+      </div>
+    </div>
+    <div id='footer-categories'>
+      <h4>Categories</h4>
+      <div class='footer-vertical-list'>
+        <a href="{% url 'items' %}?br=Replay" class='footer-link'>Replay</a>
+        <a href="{% url 'items' %}?br=Levis" class='footer-link'>Levi</a>
+        <a href="{% url 'items' %}?br=Diesel" class='footer-link'>Diesel</a>
+        <a href="{% url 'items' %}?br=Superdry" class='footer-link'>Superdry</a>
+      </div>
+      <div class='footer-vertical-list'>
+        <a href="{% url 'items' %}?br=EDWIN" class='footer-link'>EDWIN</a>
+        <a href="{% url 'items' %}?br=AllSaints" class='footer-link'>AllSaints</a>
+        <a href="{% url 'items' %}?br=G-Star" class='footer-link'>G-Star</a>
+        <a href="{% url 'items' %}?br=Nudie" class='footer-link'>Nudie</a>
+      </div>
+      <div class='footer-vertical-list'>
+        <a href="{% url 'items' %}?br=Wrangler" class='footer-link'>Wrangler</a>
+        <a href="{% url 'items' %}?br=Tommy Hilfiger" class='footer-link'>Tommy Hilfiger</a>
+        <a href="{% url 'items' %}?br=7 For All Mankind" class='footer-link'>7 For All Mankind</a>
+        <a href="{% url 'items' %}?br=HUGO BOSS" class='footer-link'>HUGO BOSS</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

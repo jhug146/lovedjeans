@@ -1,0 +1,70 @@
+{% extends "base-template.html" %}
+
+{% block title %}
+<title>Analytics - Lovedjeans</title>
+{% endblock %}
+
+{% block extra_head %}
+<script src="https://cdn.anychart.com/releases/8.0.0/js/anychart-base.min.js"></script>
+{% endblock %}
+
+{% block main %}
+<div id='policy-main'>
+  <div id='analytics-views'>
+    <div id='analytics-views-container'></div>
+    <script>
+      "use strict";
+      anychart.onDocumentReady(function() {
+        let rows = JSON.parse("{{views}}".replaceAll("&quot;",'"').replaceAll("\\","\\\\"));
+        let data = {
+          header: ["Name", "Page Views"],
+          rows: rows
+        };
+        let chart = anychart.column();
+        chart.data(data);
+        chart.title("Page Views");
+
+        chart.container("analytics-views-container");
+        chart.draw();
+      });
+    </script>
+  </div>
+  <div id='analytics-visitors'>
+    <div id='analytics-visitors-container'></div>
+    <script>
+      anychart.onDocumentReady(function() {       
+        let data = JSON.parse("{{visitors}}".replaceAll("&quot;",'"'));
+
+        let chart = anychart.line();
+        chart.title("Visitors");
+        let series = chart.line(data);
+        series.name("Sessions");
+
+        chart.container("analytics-visitors-container");
+        chart.draw();
+      });
+    </script>
+  </div>
+  <div id='analytics-orders'>
+    <div id='analytics-orders-container'></div>
+    <script>
+      anychart.onDocumentReady(function() {       
+        let data = JSON.parse("{{orders}}".replaceAll("&quot;",'"'));
+
+        let chart = anychart.line();
+        chart.title("Orders");
+        let series = chart.line(data);
+        series.name("Sales");
+
+        chart.container("analytics-orders-container");
+        chart.draw();
+      });
+    </script>
+  </div>
+  <form id="delete-item-form" action="{% url 'delete_item' %}" method="post"> {% csrf_token %}
+    <input type="text" name="sku">
+    <input type="hidden" name="stay">
+    <input type="submit" value="Delete SKU">
+  </form>
+</div>
+{% endblock %}

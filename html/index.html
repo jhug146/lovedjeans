@@ -1,0 +1,34 @@
+{% extends "base-template.html" %}
+
+{% block title %}
+<title>Loved Jeans</title>
+{% endblock %}
+
+{% block main %}
+  {% load static %}
+  <img id='home-main-image' src="{% static 'media/home-main.jpg'%}">
+  {% load static %}
+  <img id='main-sub-heading' src="{% static 'media/sub_heading.jpg'%}">
+  <div id='main-main'>
+    <div id='gender-shops'>
+      <a href="{% url 'items' %}?gen=men" class='shop-links'>
+        <div id='mens-shop'>
+          <p class='shop-links-text'>Shop Mens</p>
+          {% load static %}
+          <img id='mens-img' src="{% static 'media/mens_shop.jpg'%}">
+        </div>
+      </a>
+      <a href="{% url 'items' %}?gen=women" class='shop-links'>
+        <div id='womens-shop'>
+          <p class='shop-links-text'>Shop Womens</p>
+          {% load static %}
+          <img id='womens-img' src="{% static 'media/womens_shop.jpg'%}">
+        </div>
+      </a>
+    </div>
+  </div>
+  {% load static %}
+  <div id='brands-image-div'>
+    <img id='brands-list' src="{% static 'media/brands.jpg'%}">
+  </div>
+{% endblock %}

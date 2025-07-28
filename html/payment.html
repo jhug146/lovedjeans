@@ -1,0 +1,135 @@
+{% extends "base-template.html" %}
+
+{% block title %}
+<title>Loved Jeans - Payment</title>
+{% endblock %}
+
+{% block main %}
+<h1 id='payment-title'>Payment:</h1>
+<table id='checkout-table' style='width: 70%; margin-left: 15%'><tbody>
+  <tr>
+    <th class='checkout-table-header' colspan=2>Item</th>
+    <th class='checkout-table-header' colspan=1>Price</th>
+  </tr>
+  {% for item in cart %}
+    <tr class='item-box' id='table-row-{{ item.sku }}'>
+      <td class='item-image-cell'>
+        <div class='item-box-image-container'>      
+          <img class='item-box-image' src="{{ item.image_title.0 }}" alt='This image could not be loaded'>
+        </div>
+      </td>
+      <td class='item-title-cell'>
+        <div class='item-box-title-container'>
+          <p class='item-box-title'>{{ item.title }}</p>
+        </div>
+      </td>
+      <td class='item-price-cell'>
+        <div class='item-box-price-container'>
+          <p class='item-box-price'>£{{ item.price }}</p>
+        </div>
+      </td>
+    </tr>
+  {% endfor %}
+</tbody></table>
+<div id='total-price'>
+  <p id='p-price' class='same-line'>Items: £{{ price }}</p>
+  <p id='p-postage' class='same-line'>Postage: £{{ postage }}</p>
+  <p id='p-total'>Total: £{{ total }}</p>
+</div>
+<div id='paypal-div'>
+    <script src="https://www.paypal.com/sdk/js?client-id=ATqSTtYgmL3BEZrDpmwFYJVuSkTMyaAfzuhE_P840jCmv09ffgRWgLyxyLljngbNapn96ZhfmDCRUIWe&currency=GBP"></script>
+    <div id="paypal-button-container"></div>
+    <script>
+    var current_payment_id = "";
+    var paypal_buttons_made = false;
+    function make_paypal_buttons() {
+        paypal_buttons_made = true;
+        paypal.Buttons({
+          env: 'production',
+          createOrder: function(data, actions) {
+            let body = "{{ details }}".replace(/&quot;/g, '"');
+            if (body) {
+              return fetch(
+                  "{% url 'make_payment' %}", 
+                  {
+                    mode: 'cors',
+                    credentials: 'same-origin',
+                    method: 'post',
+                    headers: {
+                      'Content-Type': 'application/json',
+                      'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: body
+                })
+                .then(res => res.json())
+                .then(function(res) {
+                  current_payment_id = res;
+                  return res;
+                });
+            } else {
+              return null;
+            }
+          },
+          onApprove: function(data, actions) {
+            let info = "{{ details }}".replace(/&quot;/g, '"');
+            body = JSON.stringify({
+                paymentID: current_payment_id,
+                payerID:   data.payerID,
+                orderID:   data.orderID,
+                info:      info
+            });
+            return fetch("{% url 'execute_payment' %}", {
+              body: body,
+              method: "post",
+              headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+              }
+            }).then(res => res.text())
+            .then(function(res) {
+              let form = document.createElement("form");
+              document.body.appendChild(form);
+              form.method = "POST";
+              form.action = "{% url 'payment_done' %}";
+
+              let input = document.createElement("input");
+              input.type = "hidden";
+              input.name = "details";
+              input.value = res;
+
+              let csrf_input = document.createElement("input");
+              csrf_input.type = "hidden";
+              csrf_input.name = "csrfmiddlewaretoken";
+              csrf_input.value = "{{ csrf_token }}";
+
+              form.appendChild(input);
+              form.appendChild(csrf_input);
+              form.submit();
+            });
+          },
+          onCancel: function(data, actions) {
+            console.log("Payment cancelled")
+          }
+        }).render('#paypal-button-container');
+    }
+    function check_data() {
+      $("#buyer-info input:not([type=radio]),select").each(function () {
+        if ($(this).attr("id") !== "postcode-select") {
+          if (!$(this).val()) {
+            return false
+          }
+        }
+      })
+      if (!paypal_buttons_made) {
+        make_paypal_buttons();
+      }
+    }
+    $(document).ready(function(){
+      check_data();
+    });
+    $("input,select").on("change", function(){
+      check_data();
+    });
+    </script>
+  </div>
+</div>
+{% endblock %}
