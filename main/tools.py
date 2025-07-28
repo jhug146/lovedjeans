@@ -23,6 +23,12 @@ CAPTCHA_SECRET = str(os.environ.get("CAPTCHA_SECRET"))
 HOST_URL = "https://www.lovedjeans.co.uk"
 IMAGES_URL = os.path.join(HOST_URL, "/staticfiles/media/product-images/")
 
+ADMINS = (
+    ("hanzomain901@gmail.com", "James"),
+    ("jubblyjeans@gmail.com", "Sara"),
+    ("andrew.hughff@gmail.com", "Andrew")
+)
+
 SHIPPING_COSTS = {
     "UK-1": [0, 0],
     "UK-2": [0.99, 0.99],
@@ -124,9 +130,9 @@ def sale(items, shipping, order_num):
             </div>
         </div>
         </div></body></html>
-            """
-    threading.Thread(target=_send_email, args=(html, "Item Sold On https://lovedjeans.co.uk", "hanzomain901@gmail.com", "James")).start()
-    threading.Thread(target=_send_email, args=(html, "Item Sold On https://lovedjeans.co.uk", "jubblyjeans@gmail.com", "Sara/Andrew")).start()
+    """
+    for email, name in ADMINS:
+        threading.Thread(target=_send_email, args=(html, "Item Sold On https://lovedjeans.co.uk", email, name)).start()
     threading.Thread(target=_send_email, args=(html, "Loved Jeans - Thank You For Your Order", shipping['email'], shipping['firstname'])).start()
 
     for item in items:
