@@ -396,6 +396,11 @@ def get_images(sku):
 def get_stock_data():
     stock = models.Jean.objects.all()
     stock_data = []
+    images = ""
+    try:
+        images = get_images(item.sku)
+    except Exception as e:
+        images = ""
     for item in stock:
         stock_data.append((
             item.sku,
@@ -403,7 +408,7 @@ def get_stock_data():
             item.brand,
             item.description.replace(",", ";"),
             HOST_URL + "/item/" + item.sku,
-            get_images(item.sku),
+            images,
             item.price,
             item.colour,
             item.size,
