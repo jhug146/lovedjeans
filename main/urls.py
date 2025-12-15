@@ -38,5 +38,6 @@ urlpatterns = [
     path('payment_done/', views.payment_done, name='payment_done'),
     path('admin_page/', views.admin_page, name='admin_page'),
     path('get_csv_orders/', views.get_orders_csv),
-    path('get_csv_stock/', views.get_stock_csv)
+    path('get_csv_stock/', views.get_stock_csv),
+    path('is_deleter_running/', views.get_deleter_status)
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

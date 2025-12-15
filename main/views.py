@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django import utils
 from django.contrib.auth import authenticate, login
 from .forms import SearchForm
-from . import tools, models
+from . import tools, models, deleter_status
 import json, simplejson, datetime, io, csv
 from dotenv import load_dotenv
 load_dotenv()
@@ -432,3 +432,18 @@ def get_stock_csv(request):
                 response["Content-Disposition"] = "attachment; filename=lovedjeans_stock.csv"
                 return response
     return HttpResponse("")
+
+
+@csrf_exempt
+def get_deleter_status(request):
+    if request.method == "POST":
+        if "username" in request.POST:
+            username = request.POST["username"]
+            password = request.POST["password"]
+            user = authenticate(request, username=username, password=password)
+            if (user is not None) and (username in APPROVED_USERS):
+                login(request, user)
+                return HttpResponse(str(deleter_status.is_deleter_running()))
+    return HttpResponse("")
+
+
