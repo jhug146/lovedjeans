@@ -2,10 +2,11 @@ from django.shortcuts import render, redirect
 from django.template.context_processors import csrf
 from django.http import Http404, HttpResponse, HttpResponseNotAllowed, JsonResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
-from django import utils
+from django.utils import timezone
 from django.contrib.auth import authenticate, login
 from .forms import SearchForm
-from . import tools, models, deleter_status
+from . import models, deleter_status
+from . import utils as tools
 import json, simplejson, datetime, io, csv
 from dotenv import load_dotenv
 load_dotenv()
@@ -222,7 +223,7 @@ def get_orders(request):
         user = authenticate(request, username=username, password=password)
         if (user is not None) and (username in APPROVED_USERS):
             login(request, user)
-            last_check = utils.timezone.now() + datetime.timedelta(minutes=-10)
+            last_check = timezone.now() + datetime.timedelta(minutes=-10)
             orders = models.Orders.objects.filter(sale_date__gte=last_check)
             orders.update(checked=True)
             for item in orders:
