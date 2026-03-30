@@ -70,12 +70,11 @@ def get_order_data():
 def get_stock_data():
     stock = models.Jean.objects.all()
     stock_data = []
-    images = ""
-    try:
-        images = get_images(item.sku)
-    except Exception as e:
-        images = ""
     for item in stock:
+        try:
+            images = get_images(item.sku)
+        except Exception:
+            images = ""
         stock_data.append((
             item.sku,
             item.title,
