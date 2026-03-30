@@ -4,7 +4,7 @@ from django.http import Http404, HttpResponse, HttpResponseNotAllowed, JsonRespo
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 from django.contrib.auth import authenticate, login
-from . import models, deleter_status
+from . import models
 from . import utils as tools
 import json, simplejson, datetime, io, csv
 from dotenv import load_dotenv
@@ -442,7 +442,7 @@ def get_deleter_status(request):
             user = authenticate(request, username=username, password=password)
             if (user is not None) and (username in APPROVED_USERS):
                 login(request, user)
-                return HttpResponse(str(deleter_status.is_deleter_running()))
+                return HttpResponse(str(tools.is_deleter_running()))
     return HttpResponse("")
 
 

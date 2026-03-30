@@ -1,4 +1,5 @@
 import json
+import os
 
 from django.db.models import Q
 
@@ -95,3 +96,10 @@ def get_views(sku):
     for day in views:
         total += day.views
     return total
+
+def is_deleter_running():
+    try:
+        result = os.system("pgrep -f \"^bash ./deleter.sh$\" > /dev/null 2>&1")
+        return result == 0
+    except Exception:
+        return False
