@@ -277,7 +277,10 @@ def delete_item(request):
         pass
     if "website_order" in request.POST:
         if request.POST["website_order"] == "no":
-            tools.delete_folder(f"staticfiles/media/product-images/{sku}")
+            try:
+                tools.delete_folder(f"staticfiles/media/product-images/{sku}")
+            except ValueError:
+                return HttpResponse("Failure")
     if "stay" in request.POST:
         return redirect("/admin_page/")
     return HttpResponse("Success")

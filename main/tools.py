@@ -1,5 +1,6 @@
 import os
 import pathlib
+import shutil
 import sys
 import time
 import threading
@@ -424,7 +425,11 @@ def get_views(sku):
     return total
 
 def delete_folder(path):
-    os.system(f"rm -r {path}")
+    abs_path = os.path.realpath(path)
+    allowed_base = os.path.realpath("staticfiles/media/product-images")
+    if not abs_path.startswith(allowed_base + os.sep):
+        raise ValueError(f"Refusing to delete path outside media directory: {abs_path}")
+    shutil.rmtree(abs_path, ignore_errors=True)
 
 def verify_captcha(code):
     response = requests.post(
