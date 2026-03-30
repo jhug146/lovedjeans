@@ -4,7 +4,6 @@ from django.http import Http404, HttpResponse, HttpResponseNotAllowed, JsonRespo
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 from django.contrib.auth import authenticate, login
-from .forms import SearchForm
 from . import models, deleter_status
 from . import utils as tools
 import json, simplejson, datetime, io, csv
@@ -81,18 +80,16 @@ def items(request, t1="", t2="", t3="", t4="", t5=""):
         return HttpResponseRedirect(f"/items/?{joined_params}")
 
     if request.method == 'GET':
-        form = SearchForm(request.GET)
-        if form.is_valid():
-            vals = {}
-            req = dict(request.GET)
-            for param in ('gen','ws','il','br','st','col','cl','con','search','pg','ord'):
-                if param in req:
-                    vals[param] = req[param]
+        vals = {}
+        req = dict(request.GET)
+        for param in ('gen','ws','il','br','st','col','cl','con','search','pg','ord'):
+            if param in req:
+                vals[param] = req[param]
 
-            search = models.SearchManager()
-            results,total = search.search(vals)
-            page = (req['pg'][0]) if ('pg' in req) else ("1")
-            pages = total // 45 + 1
+        search = models.SearchManager()
+        results,total = search.search(vals)
+        page = (req['pg'][0]) if ('pg' in req) else ("1")
+        pages = total // 45 + 1
         form_values = models.FormValues(request.GET)
 
         brand = gender = ""
@@ -104,7 +101,6 @@ def items(request, t1="", t2="", t3="", t4="", t5=""):
         if "br" in request.GET:
             brand = request.GET["br"]
     else:
-        form = SearchForm()
         gender = ""
         brand = ""
         results = []
@@ -114,7 +110,6 @@ def items(request, t1="", t2="", t3="", t4="", t5=""):
     for item in request.session.get('cart', []):
         skus.append(item['sku'])
     context = {
-        'form': form,
         'results': results,
         'query': request.GET,
         'results_number': total,
