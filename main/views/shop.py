@@ -59,8 +59,7 @@ def items(request, t1="", t2="", t3="", t4="", t5=""):
             if param in req:
                 vals[param] = req[param]
 
-        search = models.SearchManager()
-        results,total = search.search(vals)
+        results,total = models.Jean.objects.search(vals)
         page = (req['pg'][0]) if ('pg' in req) else ("1")
         pages = total // 45 + 1
         form_values = models.FormValues(request.GET)
