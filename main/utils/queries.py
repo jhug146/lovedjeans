@@ -89,12 +89,12 @@ def get_stock_data():
         ))
     return stock_data
 
-def get_views(sku):
-    total = 0
-    views = models.Views.objects.filter(sku=sku)
-    for day in views:
-        total += day.views
-    return total
+# def get_views(sku):
+#     total = 0
+#     views = models.Views.objects.filter(sku=sku)
+#     for day in views:
+#         total += day.views
+#     return total
 
 def is_deleter_running():
     try:
