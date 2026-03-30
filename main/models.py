@@ -1,4 +1,4 @@
-from django.db import models, connection
+from django.db import models
 import uuid, re, json, os
 
 
@@ -18,62 +18,46 @@ class SearchManager(models.Manager):
         "pg": "1",
         "ord": "rnd"
     }
-    REMOVE_CHARS = ("'", '"', ">", "<", ";", "(chr 34)", ")", "(", "--", "`", "%", ",", ".")
-    def sanitise(self, string):
-        for char in self.REMOVE_CHARS:
-            string = [s.replace(char, "") for s in string]
-        return string
-
     def search(self, parameters):
         for param in self.DEFAULTS.keys():
-            if not param in parameters:
+            if param not in parameters:
                 parameters[param] = self.DEFAULTS[param]
 
-        for key in parameters.keys():
-            if parameters[key]:
-                parameters[key] = self.sanitise(parameters[key])
+        qs = self.filter(price__gt=0)
 
-        with connection.cursor() as cursor:
-            query = f"SELECT title, sku, price, paths FROM products WHERE price > 0"
-            if type(parameters['gen']) is list:
-                if len(parameters['gen']) == 1:
-                    if parameters['gen'][0] in ("women", "men"):
-                        query += f" AND gender = '{parameters['gen'][0]}'"
-                else:
-                    query += f" AND gender IN {tuple(parameters['gen'])}"
+        if type(parameters['gen']) is list:
+            valid_genders = [g for g in parameters['gen'] if g in ('men', 'women')]
+            if valid_genders:
+                qs = qs.filter(gender__in=valid_genders)
 
-            search = parameters['search'][0] if type(parameters['search']) is list else parameters['search']
-            for word in search.split(" "):
-                query += f" AND title LIKE '%{word}%'"
-            for param,starter in zip(
-                ('ws','il','br','st','col','cl','con'),
-                ('size','insideLeg','brand','legStyle','colour','closure','ebayCondition')
-            ):
-                if parameters[param]:
-                    if len(parameters[param]) == 1:
-                        parameters[param].append("")
-                    query += f" AND {starter} IN {tuple(parameters[param])}"
+        search = parameters['search'][0] if type(parameters['search']) is list else parameters['search']
+        for word in search.split(" "):
+            if word:
+                qs = qs.filter(title__icontains=word)
 
-            if parameters['ord'][0] == 'lp':
-                query += ' ORDER BY price'
-            elif parameters['ord'][0] == 'hp':
-                query += ' ORDER BY price DESC'
-            elif parameters['ord'][0] == 'mrf':
-                query += ' ORDER BY sku DESC'
-            query += ';'
+        for param, field in zip(
+            ('ws', 'il', 'br', 'st', 'col', 'cl', 'con'),
+            ('size', 'insideLeg', 'brand', 'legStyle', 'colour', 'closure', 'ebayCondition')
+        ):
+            if parameters[param]:
+                qs = qs.filter(**{f"{field}__in": parameters[param]})
 
-            cursor.execute(query)
-            results_list = []
-            for row in cursor.fetchall():
-                item = Jean(title=row[0], sku=row[1], price=row[2], paths=row[3])
-                results_list.append(item)
+        ordering = parameters['ord'][0] if type(parameters['ord']) is list else parameters['ord']
+        if ordering == 'lp':
+            qs = qs.order_by('price')
+        elif ordering == 'hp':
+            qs = qs.order_by('-price')
+        elif ordering == 'mrf':
+            qs = qs.order_by('-sku')
 
-            try:
-                page = int(parameters['pg'][0])
-            except ValueError:
-                page = 1
-            item_range = results_list[45*(page-1):45*(page)]
-            return item_range,len(results_list)
+        try:
+            page = int(parameters['pg'][0])
+        except (ValueError, IndexError):
+            page = 1
+
+        total = qs.count()
+        items = list(qs[45*(page-1):45*page])
+        return items, total
 
 
 class Orders(models.Model):
